@@ -4,7 +4,9 @@ Created on Thurs May 12 3.09 PM
 @author: James Tietcheu
 
 """
+import inspect
 import keyword
+import math
 import re
 import csv
 import sys
@@ -23,9 +25,8 @@ def word_unigram(lines):
             count[w] += 1
         else:
             count[w] = 1
-    print(count)
-    # for word, times in count.items():
-    #     print("%s was found %d times" % (word, times))
+    return count
+
 
 
 def keyword_count(lines):
@@ -36,20 +37,7 @@ def keyword_count(lines):
     lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', 'r').read()
     for keywords in keywordList:
         count[keywords] = lines.count(keywords)
-    print(count)
-    # count = {}
-    # words = []
-    # c = 0
-    # words = lines.split()
-    # len_of_file = len(words)
-    # print("the length of the file is: ", len_of_file)
-    # # print(words)
-    # for w in words:
-    #     if w in keywordList:
-    #         # print(w)
-    #         c += 1      # counting the number of occurrences of keywords
-    # print(c)
-    # print(c/len_of_file)
+    return count
 
 def token_count(lines):
     token_list = ['!', '!=', '!==', '%', '%=', '&', '&&', '&=', '(', ')', '*', '*=', '+', '++', '+=', ',', '-', '--',
@@ -60,10 +48,11 @@ def token_count(lines):
     words = lines.split()
     print(words)
     for token in token_list:
-        count[token] = words.count(token)
+        if token in words:
+            count[token] = lines.count(token)
             # print(w)
                  # counting the number of matching tokens
-    print(count)
+    return count
 
 
 def unique_keywords(lines):
@@ -75,16 +64,13 @@ def unique_keywords(lines):
     words = []
     result = []
     words = lines.split()
-    len_of_file = len(words)
-    print("the length of the file is: ", len_of_file)
     print(words)
-    for word in words:
-        for key_word in keyword_list:
-            if key_word in word:
-                result.append(key_word)
-    unique_words = set(result)
-    print(unique_words)
-    print(len(unique_words))
+    for keywords in keyword_list:
+        count[keywords] = lines.count(keywords)
+    for key, values in count.items():
+        if values == 1:
+            result.append(key)
+    return result
 
 def line_average():
     s = []
@@ -96,8 +82,7 @@ def line_average():
             # print(s)
         count[l] = len(l)
         # print(ls)
-    print("line:", count)
-    print(len(lines))
+    return count
 
 def comment_count(lines):
     comment_list = ['//', '#', '/*', '*/']
@@ -111,6 +96,16 @@ def comment_count(lines):
         # counting the number of matching tokens
     print(count)
 
+def parameter_per_function(lines):
+    # comment_list = ['//', '#', '/*', '*/']
+    words = []
+    count = {}
+    lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', 'r').readlines()
+    # print(words)
+    for l in lines:
+        if 'function' in l:
+            pass
+
 def whitespace_check():
     result = []
     lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', 'r').readlines()
@@ -118,10 +113,11 @@ def whitespace_check():
     for line in lines:
         if re.match(r"[0-9A-Za-z_]", line):
             result.append('non-whitespace')
-            return True
+            # return True
         if re.match(r'[^0-9A-Za-z_]', line):
             result.append('whitespace')
-            return False
+            # return False
+    return result
 
 def start_line():
     c = []
@@ -134,16 +130,48 @@ def start_line():
             c.append('tab')
         if re.match(r'\n', line):
             c.append('new line')
-    print(c)
+    return c
 
 def empty_line():
     lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', 'r').readlines()
-    print(lines)
-    count = 0
+    count = {}
     for line in lines:
         if re.match(r"\n", line):
-            count += 1
-    print(count)
+            count[line] = lines.count(line)
+            # count += 1
+    return len(count)
+
+def empty_character():
+    lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', 'r').readlines()
+    word = []
+    c = []
+    for l in lines:
+        if l.startswith('\n'):
+            if re.match(r'[^0-9A-Za-z_]', l):
+                c.append('new line')
+    print(len(c))
+
+
+def avg_calc():
+    c = 0
+    line = line_average()
+    for key, value in line.items():
+        c += value
+    total_item = len(line.keys())
+    mean = c / total_item
+    return mean
+
+def sd_calc():
+    data = line_average()
+
+    mean, stdDev = avg_calc(), 0.0
+    for key, value in data.items():
+        stdDev += (float(value) - mean) ** 2
+    total_item = len(data.keys())
+    stdDev = math.sqrt(stdDev / float(total_item - 1))
+    print(stdDev)
+    # return stdDev
+
 
 def main():
     # dir = input("Enter the directory of the file: ")
@@ -151,21 +179,32 @@ def main():
     mode = 'r' # specify the a mode
     lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', mode).read()  # Open file on read mode and reading the entire file
     # getting the length of the file
+    # print(lines)
     for element in lines:
         len_of_file += len(element)
-    print(len_of_file)
-    lines = re.sub(r"[^a-zA-Z0-9-(!=#%$&{<(?}*;:/>|)]+", " ", lines) # spacing the elements
+    # print(len_of_file)
+    lines_words = re.sub(r"[^0-9A-Za-z_]", " ", lines) # spacing the elements
+    lines_characters = re.sub(r"[0-9A-Za-z_]", " ", lines)
+    # print("hi: ", lines_characters)
     # jsToCsv(dir)
-    # word_unigram(lines)
+    unigram = word_unigram(lines_words)
     # keyword_count(lines)
     # line_average()
-    # unique_keywords(lines)
-    # token_count(lines)
+    # unique_keywords(lines_words)
+    # token_count(lines_characters)
     # comment_count(lines)
-    start_line()
+    empty_character()
+    # start_line()
     # empty_line()
     # whitespace_check()
+    # avg_calc()
+    # sd_calc()
+    # parameter_per_function(lines)
     # lines.close()  # Close file
+    # result = open('result.csv', 'w')
+    # for word in unigram:
+    #     result.write(word)
+
 
 if __name__ == '__main__':
     main()
