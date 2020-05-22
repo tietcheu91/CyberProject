@@ -104,7 +104,13 @@ def parameter_per_function(lines):
     # print(words)
     for l in lines:
         if 'function' in l:
-            pass
+            element = l.index('function') + 8
+            l_new = l[element:]
+            l_words = re.sub(r"[^0-9A-Za-z_]", " ", l_new)
+            words = l_words.split()
+            count[l] = len(words)
+    return count
+
 
 def whitespace_check():
     result = []
@@ -143,12 +149,13 @@ def empty_line():
 
 def empty_character():
     lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', 'r').readlines()
+    i = 0
     word = []
     c = []
-    for l in lines:
-        if l.startswith('\n'):
-            if re.match(r'[^0-9A-Za-z_]', l):
-                c.append('new line')
+    while i < len(lines)-1:
+        if lines[i].startswith('\n') and lines[i+1].startswith('}'):
+            c.append('new line')
+        i += 1
     print(len(c))
 
 
@@ -179,7 +186,7 @@ def main():
     mode = 'r' # specify the a mode
     lines = open('/Users/jamestietcheu/Downloads/tutoring/Hw7/player.js', mode).read()  # Open file on read mode and reading the entire file
     # getting the length of the file
-    # print(lines)
+    print(lines)
     for element in lines:
         len_of_file += len(element)
     # print(len_of_file)
@@ -187,7 +194,7 @@ def main():
     lines_characters = re.sub(r"[0-9A-Za-z_]", " ", lines)
     # print("hi: ", lines_characters)
     # jsToCsv(dir)
-    unigram = word_unigram(lines_words)
+    # unigram = word_unigram(lines_words)
     # keyword_count(lines)
     # line_average()
     # unique_keywords(lines_words)
