@@ -1,1 +1,828 @@
-vardisplayNamesfunctiondatabottomemptyeachiplayeridrowdivclasscardmx2dflexcolmd3mb4pximgbttn_topresizeView1altnamesrcimagebodyh4titleh6textcountryappendclickwindowlocationhrefviewlenlengthif0bottom_topcontWevefoundstrongzeroresultselsesearchDataajaxtypePOSTurlsearchdataTypejsoncontentTypeapplicationcharsetutf8JSONstringifysuccessresultplayersfieldvalfocuserrorrequeststatusconsolelogErrorcreatingNewadding_newdivCh2Createanewname_createinputdesign_inputplaceholderimage_createsum_createsumsummaryyear_createnumberyearpeakwc_createwcworldcupcountry_createsubmitCreatebuttontesttbutton_createSubmitcreate_itembottom_createedit_itemitem_idboolitemsdelfieldcachefalsereloadedit_fieldupdate_sumeditfieldpeak_yearworld_cupcreateall_dataYouhavesuccessfullyaddedtoourlistofthegreatestsoccerevertext1button_viewalerthiedittrimaddClassredattrPleaseenterafterspancheck_namerequirednextcheck_clientcsscolorclearancheck_imagecheck_sumpleasecheck_yearwc_inputcheck_wccheck_countrydocumentfinddisabledtruereadyautocompletesourcenamesoneventtargetvalueremoveaddkeypressewhich13preventDefaultcreatingitemwhenclickingbttn_savehidebttn_cancelbttn_undobttn_editableelmentthisitem_to_editshowcontenteditablebgwarningpadding5pxoriginal_entryhtmledit_typereturnclosestremoveAttrremoveClassarrextendpost_msgprenullspan_idxbttn_delcontryitem_to_edit_cnt
+"var displayNames = function(data){
+",35
+35,
+"
+",1
+1,
+"    $(""#bottom"").empty()
+",25
+25,
+"    $.each(data, function(i, player){
+",38
+38,
+"        element = player['country']
+",36
+36,
+"        element2 = player['name']
+",34
+34,
+"        element1 = $(""#search-field"").val()    
+",48
+48,
+"        if(element.includes(element1) || element2.includes(element1)){
+",71
+71,
+"            var id = player[""id""]
+",34
+34,
+"            var row = $(""<div class='card mx-2 d-flex col-md-3 mb-4 px-4 '>"" 
+",78
+78,
+"                        + ""<img id=bttn_""+id+"" class='card-img-top resizeView1' alt=""+player[""name""]+"" src= '""+player[""image""]+""'/>"" 
+",134
+134,
+"                        + ""<div class='card-body'>"" + ""<h4 class='card-title'>"" + player[""name""] + ""</h4>"" 
+",108
+108,
+"                        + ""<h6 class='card-text'>"" + player[""country""] + ""</h6>"" + ""</div>"" + ""</div>"")
+",104
+104,
+"        }
+",10
+10,
+"        $(""#bottom"").append(row)
+",33
+33,
+"        $(""#bttn_""+id).click(function(){
+",41
+41,
+"            window.location.href = '/view/' + id; 
+",51
+51,
+"        })
+",11
+11,
+"            
+",13
+13,
+"    })
+",7
+7,
+"    var len = $('.card').length
+",32
+32,
+"    if (len == 0)
+",18
+18,
+"        $(""#bottom_top"").append(""<div class='cont'> We've found "" +""<strong>zero</strong>""+ "" results </div>"")
+",111
+111,
+"    else
+",9
+9,
+"        $(""#bottom_top"").append(""<div class='cont'> We've found ""+""<strong>"" +len + ""</strong>""+ "" results... </div>"")
+",119
+119,
+"}
+",2
+2,
+"var searchData = function(name){
+",33
+33,
+"       
+",8
+8,
+"    $.ajax({
+",13
+13,
+"        type: ""POST"",
+",22
+22,
+"        url: ""/search"",                
+",40
+40,
+"        dataType : ""json"",
+",27
+27,
+"        contentType: ""application/json; charset=utf-8"",
+",56
+56,
+"        data : JSON.stringify(name),
+",37
+37,
+"        success: function(result){
+",35
+35,
+"            // console.log(result)
+",35
+35,
+"            $.each(result['players'], function(i, player){
+",59
+59,
+"                element = player['country']
+",44
+44,
+"                element1 = $(""#search-field"").val()
+",52
+52,
+"                if(element.includes(element1))
+",47
+47,
+"                    player['country'].
+",39
+39,
+"            })
+",15
+15,
+"            displayNames(result[""players""])
+",44
+44,
+"            $(""#search-field"").val('')
+",39
+39,
+"            $(""#search-field"").focus()
+",39
+39,
+"        },
+",11
+11,
+"        error: function(request, status, error){
+",49
+49,
+"            console.log(""Error"");
+",34
+34,
+"            console.log(request)
+",33
+33,
+"            console.log(status)
+",32
+32,
+"            console.log(error)
+",31
+31,
+"    });
+",8
+8,
+"var creatingNew = function(){
+",30
+30,
+"    $(""#adding_new"").empty()
+",29
+29,
+"    
+",5
+5,
+"    var row = $(""<div class='divC'>""+""<h2 class=''> Create a new player </h2>"")
+",80
+80,
+"    var name_create = $(""<div >""+""<input class='design_input' type='text' id='name-input' placeholder='name...'>""+""</div>"")
+",124
+124,
+"    var image_create = $(""<div >""+""<input class= 'design_input' type='text' id='image-input' placeholder='image...'>""+""</div>"")
+",128
+128,
+"    var sum_create = $(""<div >""+""<input class= 'design_input' type='text' id='sum-input' placeholder='summary...'>""+""</div>"")
+",126
+126,
+"    var year_create = $(""<div >""+""<input class= 'design_input' type='number' id='year-input' placeholder='peak year...'>""+""</div>"")
+",132
+132,
+"    var wc_create = $(""<div >""+""<input class= 'design_input' type='number' id='wc-input' placeholder='world cup...'>""+""</div>"")
+",128
+128,
+"    var country_create = $(""<div >""+""<input class= 'design_input' type='text' id='country-input' placeholder='country...'>""+""</div>"")
+",134
+134,
+"    var submitCreate = $(""<button class='button' class='testt' id='button_create' type='button'>""+""Submit""+""</button>""+""</div>"")
+",129
+129,
+"    $(submitCreate).click(function(){ 
+",39
+39,
+"        create_item();
+",23
+23,
+"    $(""#bottom_create"").append(row)
+",36
+36,
+"    $(""#bottom_create"").append(name_create)
+",44
+44,
+"    $(""#bottom_create"").append(image_create)
+",45
+45,
+"    $(""#bottom_create"").append(sum_create)
+",43
+43,
+"    $(""#bottom_create"").append(year_create)
+",44
+44,
+"    $(""#bottom_create"").append(wc_create)
+",42
+42,
+"    $(""#bottom_create"").append(country_create)
+",47
+47,
+"    $(""#bottom_create"").append(submitCreate)
+",45
+45,
+"var edit_item = function(item_id,field,bool){
+",46
+46,
+"    var items = {""item_id"":item_id,""field"":field, ""bool"":bool};
+",64
+64,
+"    console.log(bool);
+",23
+23,
+"     $.ajax({
+",14
+14,
+"        url: ""/delfield/""+item_id,                
+",51
+51,
+"        data : JSON.stringify(items),
+",38
+38,
+"        cache: false,
+",22
+22,
+"            window.location.reload();
+",38
+38,
+"    })   
+",10
+10,
+"var edit_field= function(item_id,field){
+",41
+41,
+"     var items = {""item_id"":item_id,""field"":field, ""val"":$('#update_sum').text()};
+",83
+83,
+"     // console.log($('#update_sum').text())
+",45
+45,
+"        url: ""/editfield/""+item_id,                
+",52
+52,
+"        cache : false,
+",23
+23,
+"var create_item = function(){  
+",32
+32,
+"    var name = $(""#name-input"").val()
+",38
+38,
+"    var image = $(""#image-input"").val()
+",40
+40,
+"    var summary = $(""#sum-input"").val()
+",40
+40,
+"    var peak_year = $(""#year-input"").val() 
+",44
+44,
+"    var world_cup = $(""#wc-input"").val()
+",41
+41,
+"    var country = $(""#country-input"").val()
+",44
+44,
+"    if (!$.trim(name).length){
+",31
+31,
+"        $(""#name-input"").focus()
+",33
+33,
+"        $(""#name-input"").addClass(""red"")
+",41
+41,
+"        $(""#name-input"").attr(""placeholder"", ""Please enter a name"")
+",68
+68,
+"        $(""#name-input"").after('<span class=""check_name"">required</span>').next('.check_client');
+",98
+98,
+"        $('.check_name').css('color', 'red');
+",46
+46,
+"    } if (!$.trim(image).length) {
+",35
+35,
+"        $(""#image-input"").focus()
+",34
+34,
+"        $(""#name-input"").addClass(""clear"")
+",43
+43,
+"        $(""#image-input"").addClass(""red"")
+",42
+42,
+"        $(""#image-input"").attr(""placeholder"", ""Please enter an image"")
+",71
+71,
+"        $(""#image-input"").after('<span class=""check_image"">required</span>').next('.check_client');
+",100
+100,
+"        $('.check_image').css('color', 'red');
+",47
+47,
+"    }
+",6
+6,
+"    if (!$.trim(summary).length) {
+",35
+35,
+"        $(""#sum-input"").focus()
+",32
+32,
+"        $(""#image-input"").addClass(""clear"")
+",44
+44,
+"        $(""#sum-input"").addClass(""red"")
+",40
+40,
+"        $(""#sum-input"").attr(""placeholder"", ""Please enter an input"")
+",69
+69,
+"        $(""#sum-input"").after('<span class=""check_sum"">required</span>').next('.check_client');
+",96
+96,
+"        $('.check_sum').css('color', 'red');
+",45
+45,
+"    if (!$.trim(peak_year).length) {
+",37
+37,
+"        $(""#year-input"").focus()
+",33
+33,
+"        $(""#sum-input"").addClass(""clear"")
+",42
+42,
+"        $(""#year-input"").addClass(""red"")
+",41
+41,
+"        $(""#year-input"").attr(""placeholder"", ""please enter an number"")
+",71
+71,
+"        $(""#year-input"").after('<span class=""check_year"">required</span>').next('.check_client');
+",98
+98,
+"        $('.check_year').css('color', 'red');
+",46
+46,
+"    if (!$.trim(world_cup).length) {
+",37
+37,
+"        $(""#wc-input"").focus()
+",31
+31,
+"        $(""#year-input"").addClass(""clear"")
+",43
+43,
+"        $(""#wc-input"").addClass(""red"")
+",39
+39,
+"        $(""#wc_input"").attr(""placeholder"", ""Please enter a number"")
+",68
+68,
+"        $(""#wc-input"").after('<span class=""check_wc"">required</span>').next('.check_client');
+",94
+94,
+"        $('.check_wc').css('color', 'red');
+",44
+44,
+"    } 
+",7
+7,
+"    if (!$.trim(country).length) {
+",35
+35,
+"        $(""#country-input"").focus()
+",36
+36,
+"        $(""#wc-input"").addClass(""clear"")
+",41
+41,
+"        $(""#country-input"").addClass(""red"")
+",44
+44,
+"        $(""#country-input"").attr(""placeholder"", ""Please enter a country"")
+",74
+74,
+"        $(""#country-input"").after('<span class=""check_country"">required</span>').next('.check_client');
+",104
+104,
+"        $('.check_country').css('color', 'red');
+",49
+49,
+"    // if (!$.trim(name).length || !$.trim(image).length || !$.trim(summary).length || !$.trim(peak_year).length || !$.trim(country).length || !$.trim(world_cup).length) {
+",172
+172,
+"    //         $(document).find(""#button_create"").attr('disabled', true);
+",74
+74,
+"    // }
+",9
+9,
+"    // if ($.trim(name).length && $.trim(image).length && $.trim(summary).length && $.trim(peak_year).length && $.trim(country).length && $.trim(world_cup).length) {
+",166
+166,
+"    //         $(document).find(""#button_create"").attr('disabled', false);
+",75
+75,
+"    var items = {""name"": $(""#name-input"").val(), ""image"": $(""#image-input"").val(), ""summary"": $(""#sum-input"").val(), ""peak_year"": $(""#year-input"").val(), ""world_cup"": $(""#wc-input"").val(), ""country"": $(""#country-input"").val()}
+",227
+227,
+"        url: ""/create"",                
+",40
+40,
+"            // console.log(all_data);
+",38
+38,
+"            var all_data = result[""data""]
+",42
+42,
+"            // console.log(players);
+",37
+37,
+"            id = players.length;
+",33
+33,
+"            // console.log(id);
+",32
+32,
+"            if ($.trim(name).length && $.trim(image).length && $.trim(summary).length && $.trim(peak_year).length && $.trim(country).length && $.trim(world_cup).length) {
+",171
+171,
+"                $(""#bottom_create"").append(""<div class='text'>You have successfully added a new player to our list of the greatest soccer players ever<div>"")
+",158
+158,
+"                $(""#bottom_create"").append(""<div class='text1'>""+""<button id='button_view' type='button'>""+""view""+""</button>"" +""</div>"")
+",137
+137,
+"                $(""#button_view"").click(function(){ 
+",53
+53,
+"                    // alert(""hi"")
+",35
+35,
+"                    window.location.href = '/edit/' + id;  
+",60
+60,
+"                })
+",19
+19,
+"            }
+",14
+14,
+"$(document).ready(function(){
+",30
+30,
+"    // $(document).find(""#search-field"").focus()
+",49
+49,
+"    // $(""#search-field"").autocomplete({
+",41
+41,
+"    //   source: names
+",23
+23,
+"    // })
+",10
+10,
+"    $(""#name-input"").on(""input"", function(event){
+",50
+50,
+"            if (event.target.value){
+",37
+37,
+"                 $('.check_name').remove();
+",44
+44,
+"    $(""#image-input"").on(""input"", function(event){
+",51
+51,
+"                 $('.check_image').remove();
+",45
+45,
+"             }
+",15
+15,
+"    $(""#sum-input"").on(""input"", function(event){ 
+",50
+50,
+"                 $('.check_sum').remove();
+",43
+43,
+"    $(""#year-input"").on(""input"", function(event){
+",50
+50,
+"                 $('.check_year').remove();
+",44
+44,
+"    $(""#wc-input"").on(""input"", function(event){
+",48
+48,
+"                $('.check_wc').remove();
+",41
+41,
+"    $(""#country-input"").on(""input"", function(event){
+",53
+53,
+"                 $('.check_country').remove();
+",47
+47,
+"    // displayNames(players);
+",30
+30,
+"     $(""#add"").click(function(){                
+",49
+49,
+"        var name = $(""#search-field"").val()
+",44
+44,
+"        // alert(""hi"");
+",24
+24,
+"        searchData(name)
+",25
+25,
+"    //enter function
+",21
+21,
+"    $(""#search-field"").keypress(function (e) {
+",47
+47,
+"      if (e.which == 13) {
+",27
+27,
+"         e.preventDefault();
+",29
+29,
+"         $(""#add"").click();
+",28
+28,
+"     }
+",7
+7,
+"   })
+",6
+6,
+"    //creating a new item
+",26
+26,
+"    $(""#create"").click(function(){ 
+",36
+36,
+"        // $(document).find(""#button_create"").attr('disabled', true);
+",70
+70,
+"        // $('.testt').attr('disabled', true);
+",47
+47,
+"        creatingNew();
+",23
+23,
+"    // edit when clicking on the item
+",38
+38,
+"    $(document).find('.bttn_save').hide()
+",42
+42,
+"    $(document).find('.bttn_cancel').hide()
+",44
+44,
+"    $(document).find('.bttn_undo').hide()
+",42
+42,
+"    //edit summary
+",19
+19,
+"    $(document).on('click', '.bttn_editable', function(event){
+",63
+63,
+"        
+",9
+9,
+"        event.preventDefault();
+",32
+32,
+"        var elment = $(this).attr('div');
+",42
+42,
+"        console.log($(this));
+",30
+30,
+"        var item_id = $('.item_to_edit').attr('item_id');
+",58
+58,
+"        // console.log (item_id)
+",33
+33,
+"        $(document).find('.bttn_save').show();
+",47
+47,
+"        $(document).find('.bttn_cancel').show();
+",49
+49,
+"        $(document).find('.bttn_editable').hide();
+",51
+51,
+"        $('.item_to_edit').attr('contenteditable', 'true');
+",60
+60,
+"        $('.item_to_edit').addClass('bg-warning').css('padding', '5px');
+",73
+73,
+"        $('.item_to_edit').focus();
+",36
+36,
+"        $('.item_to_edit').attr('original_entry', $(this).html());
+",67
+67,
+"    $(document).on('click', '.bttn_save', function(event){
+",59
+59,
+"        $(document).find('.bttn_save').hide();
+",47
+47,
+"        $(document).find('.bttn_cancel').hide();
+",49
+49,
+"        $(document).find('.bttn_editable').show();
+",51
+51,
+"        // if ($(this).attr('edit_type') == 'button'){
+",55
+55,
+"        //     return false;
+",29
+29,
+"        // }
+",13
+13,
+"        var elment = $('.item_to_edit').closest('div');
+",56
+56,
+"        $('.item_to_edit').removeAttr('contenteditable');
+",58
+58,
+"        $('.item_to_edit').removeClass('bg-warning')
+",53
+53,
+"        $('.item_to_edit').css('padding', '');
+",47
+47,
+"        var arr = {elment};
+",28
+28,
+"        $.extend(arr, {elment});
+",33
+33,
+"        // $('.post_msg').html('<pre class=""bg-success"">'+JSON.stringify(arr, null, 2) + '</pre>');
+",100
+100,
+"    $(document).on('click', '.bttn_cancel', function(event){
+",61
+61,
+"        $(document).find('.bttn_editable').show()
+",50
+50,
+"        var span_id = $('.item_to_edit');
+",42
+42,
+"        $('.item_to_edit').removeClass('bg-warning').css('padding', '');
+",73
+73,
+"        $('.item_to_edit').html($(this).attr('original_entry'));
+",65
+65,
+"    var x ;
+",12
+12,
+"    $(document).on('click', '.bttn_del', function(event){
+",58
+58,
+"          $(document).find('.bttn_del').hide();
+",48
+48,
+"          $(document).find('.bttn_editable').hide();
+",53
+53,
+"          $(document).find('.bttn_undo').show();
+",49
+49,
+"     })
+",8
+8,
+"    $(document).on('click', '.bttn_undo', function(event){
+",59
+59,
+"          $(document).find('.bttn_del').show();
+",48
+48,
+"          $(document).find('.bttn_editable').show();
+",53
+53,
+"          $(document).find('.bttn_undo').hide();
+",49
+49,
+"          
+",11
+11,
+"    // //contry edit
+",21
+21,
+"    // $(document).on('click', '.bttn_editable', function(event){
+",66
+66,
+"    //     event.preventDefault();
+",35
+35,
+"    //     var elment = $(this).attr('div');
+",45
+45,
+"    //     console.log($(this));
+",33
+33,
+"    //     var item_id = $('.item_to_edit_cnt').attr('item_id');
+",65
+65,
+"    //     // console.log (item_id)
+",36
+36,
+"    //     $(document).find('.bttn_save').show();
+",50
+50,
+"    //     $(document).find('.bttn_cancel').show();
+",52
+52,
+"    //     $(document).find('.bttn_editable').hide();
+",54
+54,
+"    //     $('.item_to_edit_cnt').attr('contenteditable', 'true');
+",67
+67,
+"    //     $('.item_to_edit_cnt').addClass('bg-warning').css('padding', '5px');
+",80
+80,
+"    //     $('.item_to_edit_cnt').focus();
+",43
+43,
+"    //     $('.item_to_edit_cnt').attr('original_entry', $(this).html());
+",74
+74,
+"    // $(document).on('click', '.bttn_save', function(event){
+",62
+62,
+"    //     $(document).find('.bttn_save').hide();
+",50
+50,
+"    //     $(document).find('.bttn_cancel').hide();
+",52
+52,
+"    //     $(document).find('.bttn_editable').show();
+",54
+54,
+"    //     // if ($(this).attr('edit_type') == 'button'){
+",58
+58,
+"    //     //     return false;
+",32
+32,
+"    //     // }
+",16
+16,
+"    //     var elment = $('.item_to_edit_cnt').closest('div');
+",63
+63,
+"    //     $('.item_to_edit_cnt').removeAttr('contenteditable');
+",65
+65,
+"    //     $('.item_to_edit_cnt').removeClass('bg-warning')
+",60
+60,
+"    //     $('.item_to_edit_cnt').css('padding', '');
+",54
+54,
+"    //     var arr = {elment};
+",31
+31,
+"    //     $.extend(arr, {elment});
+",36
+36,
+"    //     // $('.post_msg').html('<pre class=""bg-success"">'+JSON.stringify(arr, null, 2) + '</pre>');
+",103
+103,
+"    // $(document).on('click', '.bttn_cancel', function(event){
+",64
+64,
+"    //     $(document).find('.bttn_editable').show()
+",53
+53,
+"    //     var span_id = $('.item_to_edit_cnt');
+",49
+49,
+"    //     $('.item_to_edit_cnt').removeClass('bg-warning').css('padding', '');
+",80
+80,
+"    //     $('.item_to_edit_cnt').html($(this).attr('original_entry'));
+",72
+72,
+"})
+",3
+3,
