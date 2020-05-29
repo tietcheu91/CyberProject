@@ -233,5 +233,5 @@ if __name__ == '__main__':
     #     print(word)
     #     result.writelines()
     file = open(filename, 'r').readlines()
-    print(file)
+    # print(file)
     # print(unigram)
