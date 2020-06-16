@@ -21,6 +21,7 @@ class website_check():
 
     def __init__(self, path):
         # pdb.set_trace()
+        self.fname = fname
         self.path = path
         self.final_result = {}
         f = open(path, 'r')
@@ -266,8 +267,8 @@ class website_check():
         return stdDev
 
     def output_data(self):
-        for key, value in self.final_result.items():
-            output = pd.DataFrame((self.final_result).items(), columns=['element', 'data'])
+
+        output = pd.DataFrame(self.final_result, index=self.fname)
         filename = 'result.csv'
         output.to_csv(filename)
         result = open(filename, 'r').read()
@@ -289,14 +290,14 @@ def main():
 
 
 if __name__ == '__main__':
-
+    fname = []
     dir_path = main()
     mode = 'r'  # specify the a mode
     directory = os.path.normpath(dir_path)
     for subdir, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(".js"):
-                print(file)
+                fname.append(file)
                 my_web = website_check(os.path.join(subdir, file))
                 my_web.word_unigram()
                 my_web.keyword_count()
@@ -311,7 +312,9 @@ if __name__ == '__main__':
                 my_web.avg_calc()
                 my_web.sd_calc()
                 my_web.parameter_per_function()
-                my_web.output_data()
+    my_web.output_data()
+
+    #print(fname)
     # lines.close()  # Close file
     # filename = 'result.csv'
     # print('hi: ', unigram)
