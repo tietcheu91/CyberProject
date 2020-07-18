@@ -14,17 +14,23 @@ import os
 import glob
 from csv import reader
 import pandas as pd
+import time
+import concurrent.futures
+from multiprocessing import Pool
 
-import pdb
+start = time.perf_counter()
+
+
 
 class website_check():
 
     def __init__(self, path):
         # pdb.set_trace()
+        m = 'r' # mode
         self.fname = fname
         self.path = path
         self.final_result = {}
-        f = open(path, 'r')
+        f = open(path, m)
         self.lines = f.read()
         self.file_length = 0
         for element in self.lines:
@@ -274,59 +280,51 @@ class website_check():
         result = open(filename, 'r').read()
         print(result)
 
+    def gettingJsFile(self):
+        fileName = []
+        dir_path = self.folder()
+        directory = os.path.normpath(dir_path)  # getting the di
+        for subdir, dirs, files in os.walk(directory):
+            for file in files:
+                if file.endswith(".js"):
+                    fileName.append(file)
+        return fileName
+
+    def file_Execution(self, files):
+        for files in self.gettingJsFile():
+            my_web = website_check(files)
+            my_web.word_unigram()
+            my_web.keyword_count()
+            my_web.line_average()
+            my_web.unique_keywords()
+            my_web.token_count()
+            my_web.comment_count()
+            my_web.empty_character()
+            my_web.start_line()
+            my_web.empty_line()
+            my_web.whitespace_check()
+            my_web.avg_calc()
+            my_web.sd_calc()
+            my_web.parameter_per_function()
+            output = my_web.output_data()
+        return output
 
 
-        # for key, value in self.final_result.items():
-        #     print('{} {}'.format(key, value))
-
+    def folder(self):
+        if len(sys.argv) != 2:
+            print('usage: python lexical_feature.py <path-for-search>')
+            path = '/Users/jamestietcheu/Downloads/tutoring/Hw7/'
+            return path
+        path = sys.argv[1]  # user entering the desired path
+        return path
 
 def main():
-    if len(sys.argv) != 2:
-        print('usage: python lexical_feature.py <path-for-search>')
-        path = '/Users/jamestietcheu/Downloads/tutoring/Hw7/'
-        return path
-    path = sys.argv[1]  # user entering the desired path
-    return path
+    with Pool(processes=4) as pool:
+        print(pool.map(self.file_Execution(), self.gettingJsFile()))
 
 
 if __name__ == '__main__':
-    fname = []
-    dir_path = main()
-    mode = 'r'  # specify the a mode
-    directory = os.path.normpath(dir_path)
-    for subdir, dirs, files in os.walk(directory):
-        for file in files:
-            if file.endswith(".js"):
-                fname.append(file)
-                my_web = website_check(os.path.join(subdir, file))
-                my_web.word_unigram()
-                my_web.keyword_count()
-                my_web.line_average()
-                my_web.unique_keywords()
-                my_web.token_count()
-                my_web.comment_count()
-                my_web.empty_character()
-                my_web.start_line()
-                my_web.empty_line()
-                my_web.whitespace_check()
-                my_web.avg_calc()
-                my_web.sd_calc()
-                my_web.parameter_per_function()
-    my_web.output_data()
 
-    #print(fname)
-    # lines.close()  # Close file
-    # filename = 'result.csv'
-    # print('hi: ', unigram)
-    # result = open(filename, 'w')
-    # for key, value in unigram.items():
-    #     fieldnames = [key, value]
-    #     writer = csv.DictWriter(result, fieldnames=fieldnames)
-    #
-    #     writer.writeheader()
-    #     writer.writerow({key : value})
-    # #     print(word)
-    # #     result.writelines()
-    # file = open(filename, 'r').readlines()
-    # print(file)
-    # print(unigram)
+    main()
+    finish = time.perf_counter()
+    print(f'Finished in {round(finish - start, 2)} second(s)')
