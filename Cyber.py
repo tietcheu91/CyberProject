@@ -281,32 +281,31 @@ class website_check():
         print(result)
 
     def gettingJsFile(self):
-        fileName = []
+        list_of_files = []
         dir_path = self.folder()
         directory = os.path.normpath(dir_path)  # getting the di
         for subdir, dirs, files in os.walk(directory):
             for file in files:
                 if file.endswith(".js"):
-                    fileName.append(file)
-        return fileName
+                    list_of_files.append(file)
+        return list_of_files
 
-    def file_Execution(self, files):
-        for files in self.gettingJsFile():
-            my_web = website_check(files)
-            my_web.word_unigram()
-            my_web.keyword_count()
-            my_web.line_average()
-            my_web.unique_keywords()
-            my_web.token_count()
-            my_web.comment_count()
-            my_web.empty_character()
-            my_web.start_line()
-            my_web.empty_line()
-            my_web.whitespace_check()
-            my_web.avg_calc()
-            my_web.sd_calc()
-            my_web.parameter_per_function()
-            output = my_web.output_data()
+    def file_Execution(self, file):
+        my_web = website_check(file)
+        my_web.word_unigram()
+        my_web.keyword_count()
+        my_web.line_average()
+        my_web.unique_keywords()
+        my_web.token_count()
+        my_web.comment_count()
+        my_web.empty_character()
+        my_web.start_line()
+        my_web.empty_line()
+        my_web.whitespace_check()
+        my_web.avg_calc()
+        my_web.sd_calc()
+        my_web.parameter_per_function()
+        output = my_web.output_data()
         return output
 
 
@@ -319,8 +318,12 @@ class website_check():
         return path
 
 def main():
+    a = website_check()
     with Pool(processes=4) as pool:
-        print(pool.map(self.file_Execution(), self.gettingJsFile()))
+        executing_code = a.file_Execution()
+        # list_of_files = a.gettingJsFile()
+        c = pool.map(executing_code, a.gettingJsFile())
+        print(c)
 
 
 if __name__ == '__main__':
