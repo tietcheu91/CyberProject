@@ -291,6 +291,7 @@ class website_check():
         return list_of_files
 
     def file_Execution(self, file):
+        file = self.folder()
         my_web = website_check(file)
         my_web.word_unigram()
         my_web.keyword_count()
@@ -317,7 +318,16 @@ class website_check():
         path = sys.argv[1]  # user entering the desired path
         return path
 
-def main():
+# def main():
+#     a = website_check()
+#     with Pool(processes=4) as pool:
+#         executing_code = a.file_Execution()
+#         # list_of_files = a.gettingJsFile()
+#         c = pool.map(executing_code, a.gettingJsFile())
+#         print(c)
+
+
+if __name__ == '__main__':
     a = website_check()
     with Pool(processes=4) as pool:
         executing_code = a.file_Execution()
@@ -325,9 +335,5 @@ def main():
         c = pool.map(executing_code, a.gettingJsFile())
         print(c)
 
-
-if __name__ == '__main__':
-
-    main()
     finish = time.perf_counter()
     print(f'Finished in {round(finish - start, 2)} second(s)')
