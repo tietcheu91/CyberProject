@@ -17,6 +17,9 @@ import pandas as pd
 import time
 import concurrent.futures
 from multiprocessing import Pool
+import tqdm
+import pdb
+
 
 start = time.perf_counter()
 
@@ -26,10 +29,10 @@ class website_check():
 
     def __init__(self, path):
         # pdb.set_trace()
+        self.path = path
         m = 'r' # mode
-        self.path = self.folder()
         self.final_result = {}
-        f = open(path, m)
+        f = open(self.path, m)
         self.lines = f.read()
         self.file_length = 0
         for element in self.lines:
@@ -271,26 +274,20 @@ class website_check():
 
         return stdDev
 
-    def output_data(self):
 
-        output = pd.DataFrame(self.final_result, index=self.fname)
-        filename = 'result.csv'
-        output.to_csv(filename)
-        result = open(filename, 'r').read()
-        print(result)
-
-    def gettingJsFile(self):
+    def gettingJsFiles(self):
         list_of_files = []
-        dir_path = self.folder()
+        dir_path = folder()
         directory = os.path.normpath(dir_path)  # getting the di
         for subdir, dirs, files in os.walk(directory):
             for file in files:
                 if file.endswith(".js"):
                     list_of_files.append(file)
+        # print("tell me ", list_of_files)
         return list_of_files
 
-    def file_Execution(self):
-        file = self.folder()
+    def file_Execution(self, file):
+        #directory vs JSfile
         my_web = website_check(file)
         my_web.word_unigram()
         my_web.keyword_count()
@@ -305,34 +302,72 @@ class website_check():
         my_web.avg_calc()
         my_web.sd_calc()
         my_web.parameter_per_function()
-        output = my_web.output_data()
+        output = my_web.gettingJsFiles()
+        # output = my_web.output_data()
         return output
 
-
-    def folder(self):
-        if len(sys.argv) != 2:
-            print('usage: python lexical_feature.py <path-for-search>')
-            path = '/Users/jamestietcheu/Downloads/tutoring/Hw7/'
-            return path
-        path = sys.argv[1]  # user entering the desired path
+def folder():
+    if len(sys.argv) != 2:
+        # print('usage: python lexical_feature.py <path-for-search>')
+        path = '/Users/jamestietcheu/PycharmProjects/cyberProject/data'
         return path
+    path = sys.argv[1]  # user entering the desired path
+    return path
 
 # def main():
-#     a = website_check()
+#     a = website_check(file)
 #     with Pool(processes=4) as pool:
-#         executing_code = a.file_Execution()
-#         # list_of_files = a.gettingJsFile()
-#         c = pool.map(executing_code, a.gettingJsFile())
+#         executing_code = file_Execution()
+#         list_of_files = gettingJsFile()
+#         c = pool.map(executing_code a.gettingJsFile())
 #         print(c)
+#     return None
+def gettingJsFiles():
+    list_of_files = []
+    dir_path = folder()
+    # import pdb
+    # pdb.set_trace()
+    directory = os.path.normpath(dir_path)  # getting the di
+    for subdir, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".js"):
+                list_of_files.append(dir_path + '/' + file)
+    return list_of_files
+def handler(path):
+    a = website_check(path)
+    a.file_Execution(path)
+    files_names = gettingJsFiles()
+    # print(files_names)
+    output = pd.DataFrame(a.final_result, index=files_names)
+    # filename = 'result.csv'
+    return output
+    # opening_file = open(filename, 'a')
+    # opening_file.write(output)
+    # result = open(filename, 'r').read()
+    # print(result)
+
 
 
 if __name__ == '__main__':
-    a = website_check()
+    # main()
+    # file = '/Users/jamestietcheu/Downloads/Hw6/static/search.js'
+
+
     with Pool(processes=4) as pool:
-        executing_code = a.file_Execution()
-        # list_of_files = a.gettingJsFile()
-        c = pool.map(executing_code, a.gettingJsFile())
-        print(c)
+        # c = pool.map(handler, gettingJsFiles())
+        returns = []
+        for x in tqdm.tqdm(pool.map(handler, gettingJsFiles())):
+            returns.append(x)
+
+    # pdb.set_trace()
+    # print(returns)
+    filename = 'result.csv'
+    for i in returns:
+        i.to_csv(filename)
+    # opening_file = open(filename, 'a')
+    # opening_file.write(returns)
+    result = open(filename, 'r').read()
+    print(result)
 
     finish = time.perf_counter()
     print(f'Finished in {round(finish - start, 2)} second(s)')
